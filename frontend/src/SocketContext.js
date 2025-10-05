@@ -1,20 +1,19 @@
-import React, {createContext, useState, useRef, useEffect, Children} from "react";
+import React, {createContext, useState, useRef, useEffect} from "react";
 import { io } from 'socket.io-client';
 import Peer from 'simple-peer';
 
 const SocketContext = createContext();
-
 
 const socket = io('http://localhost:8080');
 
 const ContextProvider = ({children}) => {
 
     const [stream, setStream] = useState(null);
-    const [me, setMe ] = useState('');
+    const [me, setMe] = useState('');
     const [call, setCall] = useState({});
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
-    const [name, steName] = useRef('');
+    const [name, setName] = useState('');
 
     const myVideo = useRef();
     const userVideo = useRef();
@@ -25,7 +24,9 @@ const ContextProvider = ({children}) => {
         .then((currentStream) => {
             setStream(currentStream);
 
+           if (myVideo.current) {
             myVideo.current.srcObject = currentStream;
+        }
         });
 
         socket.on('me', (id) => setMe(id));
@@ -44,7 +45,9 @@ const ContextProvider = ({children}) => {
         });
 
         peer.on('stream', (currentStream) => {
+            if (userVideo.current) {
             userVideo.current.srcObject = currentStream;
+        }
         });
 
         peer.signal(call.signal);
@@ -58,9 +61,11 @@ const ContextProvider = ({children}) => {
         peer.on('signal', (data) => {
             socket.emit('calluser', {userToCall: id, signalData: data, from: me, name})
         });
-
+        
         peer.on('stream', (currentStream) => {
+            if (userVideo.current) {
             userVideo.current.srcObject = currentStream;
+        }
         });
 
         socket.on('callaccepted', (signal) => {
@@ -79,12 +84,23 @@ const ContextProvider = ({children}) => {
 
         window.location.reload();
     }
+    
     return (
-        <SocketContext.Provider value={{call,callAccepted,myVideo,userVideo,stream,name,steName,callEnded,me,calluser,leavecall,answercall,
+        <SocketContext.Provider value={{
+            call,
+            callAccepted,
+            myVideo,
+            userVideo,
+            stream,
+            name,
+            setName,
+            callEnded,
+            me,
+            calluser,
+            leavecall,
+            answercall,
         }}>
-
-        {children}
-
+            {children}
         </SocketContext.Provider>
     )
 }
