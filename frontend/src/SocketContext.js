@@ -7,7 +7,7 @@ const SocketContext = createContext();
 
 const socket = io('http://localhost:8080');
 
-const ContextProvider = ({Children}) => {
+const ContextProvider = ({children}) => {
 
     const [stream, setStream] = useState(null);
     const [me, setMe ] = useState('');
@@ -39,7 +39,7 @@ const ContextProvider = ({Children}) => {
         
         const peer = new Peer({ initiator: false, trickle: false, stream });
 
-        peer.on('signal', () => {
+        peer.on('signal', (data) => {
             socket.emit('answercall', {signal: data, to: call.from})
         });
 
@@ -83,7 +83,7 @@ const ContextProvider = ({Children}) => {
         <SocketContext.Provider value={{call,callAccepted,myVideo,userVideo,stream,name,steName,callEnded,me,calluser,leavecall,answercall,
         }}>
 
-        {Children}
+        {children}
 
         </SocketContext.Provider>
     )
