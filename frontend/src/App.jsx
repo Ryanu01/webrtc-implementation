@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography, AppBar, Box } from '@mui/material';
 import VideoPlayer from "./components/videoplayer";
-import Notification from "./components/notification";
-import Options from "./components/options";
+import Sidebar from "./components/options";
+import Notifications from "./components/notification";
 
 const App = () => {
     return (
@@ -26,7 +26,6 @@ const App = () => {
                     border: '2px solid black',
                     '@media (max-width: 600px)': {
                         width: '90%',
-                        margin: '30px 20px',
                     },
                 }}
             >
@@ -35,9 +34,9 @@ const App = () => {
                 </Typography>
             </AppBar>
             <VideoPlayer />
-            <Options>
-                <Notification />
-            </Options>
+            <Sidebar>
+                <Notifications />
+            </Sidebar>
         </Box>
     );
 }

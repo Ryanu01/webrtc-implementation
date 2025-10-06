@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Grid, Typography, Paper } from '@mui/material';
+import { Grid, Typography, Paper, Box } from '@mui/material';
 import { SocketContext } from '../SocketContext';
 
 const VideoPlayer = () => {
@@ -27,20 +27,22 @@ const VideoPlayer = () => {
             <Typography variant="h5" gutterBottom>
               {name || 'Name'}
             </Typography>
-            <video 
-              playsInline 
-              muted 
-              ref={myVideo} 
-              autoPlay 
-              style={{
-                width: '550px',
-              }}
+            <Box
               sx={{
+                width: '550px',
                 '@media (max-width: 600px)': {
                   width: '300px',
                 },
               }}
-            />
+            >
+              <video 
+                playsInline 
+                muted 
+                ref={myVideo} 
+                autoPlay 
+                style={{ width: '100%' }}
+              />
+            </Box>
           </Grid>
         </Paper>
       )}
@@ -56,19 +58,21 @@ const VideoPlayer = () => {
             <Typography variant="h5" gutterBottom>
               {call.name || 'Name'}
             </Typography>
-            <video 
-              playsInline 
-              ref={userVideo} 
-              autoPlay 
-              style={{
-                width: '550px',
-              }}
+            <Box
               sx={{
+                width: '550px',
                 '@media (max-width: 600px)': {
                   width: '300px',
                 },
               }}
-            />
+            >
+              <video 
+                playsInline 
+                ref={userVideo} 
+                autoPlay 
+                style={{ width: '100%' }}
+              />
+            </Box>
           </Grid>
         </Paper>
       )}
